@@ -3,16 +3,12 @@ package com.mosreg.hospital_rating.dao.impl;
 import com.mosreg.hospital_rating.config.DatabaseConfig;
 import com.mosreg.hospital_rating.dao.DataParserDao;
 import com.mosreg.hospital_rating.entity.User;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

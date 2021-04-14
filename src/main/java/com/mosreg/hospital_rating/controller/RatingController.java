@@ -41,6 +41,7 @@ public class RatingController {
             json.put("code", 200);
             JSONArray jsArr = new JSONArray();
             jsArr.put(json.toMap());
+            log.info("Full name: " + user.getFullName() + " want to resend the request");
             return new ResponseEntity<>(json.toMap(), HttpStatus.OK);
         }
         json.put("isValid", false);

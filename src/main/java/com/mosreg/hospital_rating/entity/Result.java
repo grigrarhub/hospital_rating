@@ -47,8 +47,6 @@ public class Result {
     public Response Result_2_10;
     @OneToOne(cascade = CascadeType.ALL)
     public Response Result_2_11;
-    @OneToOne(cascade = CascadeType.ALL)
-    public Response Result_2_12;
     public String Notes;
     public int Dont_visit;
 }
