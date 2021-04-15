@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +40,7 @@ public class DataParserDaoImpl implements DataParserDao {
             Connection connection = databaseConfig.dataSource().getConnection();
             log.debug("Connection for DBMS complete");
             jdbcTemplate.setDataSource(databaseConfig.dataSource());
-            List<User> list = jdbcTemplate.query(String.format(Objects.requireNonNull(requestFromFile()), getData())
+            List<User> list = jdbcTemplate.query(String.format("SELECT * FROM mrds.call_back_stac WHERE \"EvnPS_disDT\" = %s", getData())
                     , new PatientMapper());
             connection.close();
             log.debug("Disconnection for DBMS complete");
@@ -68,8 +67,6 @@ public class DataParserDaoImpl implements DataParserDao {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -2);
-        String text = "'" + simpleDateFormat.format(calendar.getTime()) + "'";
-        System.out.println(text);
         return "'" + simpleDateFormat.format(calendar.getTime()) + "'";
     }
 

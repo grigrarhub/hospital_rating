@@ -4,7 +4,7 @@ import com.mosreg.hospital_rating.entity.User;
 import com.mosreg.hospital_rating.repository.UserRepo;
 import com.mosreg.hospital_rating.service.DataParseService;
 import com.mosreg.hospital_rating.service.EmailService;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,8 +15,9 @@ import org.springframework.scheduling.annotation.Scheduled;
  **/
 @Configuration
 @EnableScheduling
-@Slf4j
 public class ScheduledTasks {
+
+    private static final Logger log = Logger.getLogger(ScheduledTasks.class);
 
     @Autowired
     private EmailService emailService;
@@ -30,15 +31,22 @@ public class ScheduledTasks {
     //Метод для отправки сообщения новым пользователям из БД в 8:00 утра
     @Scheduled(cron = "0 0 8 * * *")
     public void sendMessage() {
+        int count = 0;
         for (User user : userRepo.findUserBySendMailIsFalse()) {
             if (emailService.sendMail(user.getEmail(), user.getFullName(),
                     user.getFullDirectorName(), user.getHospitalName(), user.getUuid())) {
                 user.setSendMail(true);
                 userRepo.save(user);
-            } else log.info("Incorrect email or any parameter is empty. Full name: " + user.getFullName() +
-                    ". ID: " + user.getId() + ". Email: " + user.getEmail() + ". Full director name: " + user.getFullDirectorName() +
-                    ". Hospital name: " + user.getHospitalName());
+            } else {
+                count++;
+                log.info("ID: " + user.getId()
+                        + ". Incorrect email or any parameter is empty. Full name: " + user.getFullName()
+                        + ". Email: " + user.getEmail()
+                        + ". Full director name: " + user.getFullDirectorName()
+                        + ". Hospital name: " + user.getHospitalName());
+            }
         }
+        log.info("Number of unsent messages: " + count + ".\nINFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user");
     }
 
     //Метод для обновления БД с пользователями в 7:00 утра

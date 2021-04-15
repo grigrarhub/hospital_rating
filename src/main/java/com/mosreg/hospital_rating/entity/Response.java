@@ -3,10 +3,7 @@ package com.mosreg.hospital_rating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Модель получения данных из Json.
@@ -20,5 +17,6 @@ public class Response {
     @JsonProperty("grade")
     public byte grade;
     @JsonProperty("comment")
+    @Column(length = 500)
     public String comment;
 }

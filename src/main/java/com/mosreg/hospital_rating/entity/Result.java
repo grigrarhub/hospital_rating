@@ -9,6 +9,7 @@ import javax.persistence.*;
  **/
 @Entity
 @Data
+@Table(name = "result")
 public class Result {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +48,7 @@ public class Result {
     public Response Result_2_10;
     @OneToOne(cascade = CascadeType.ALL)
     public Response Result_2_11;
+    @Column(length = 500)
     public String Notes;
     public int Dont_visit;
 }

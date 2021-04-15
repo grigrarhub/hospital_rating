@@ -75,7 +75,7 @@ public class EmailServiceImpl implements EmailService {
 
     //Метод для выкачки текста html из файла
     private String requestFromFile() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/webapp/WEB_INF/html/mail.html"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("src/main/webapp/WEB-INF/html/mail.html"))) {
             log.debug("HTML file successfully read");
             return stream.map(String::new).collect(Collectors.joining());
         } catch (IOException e) {

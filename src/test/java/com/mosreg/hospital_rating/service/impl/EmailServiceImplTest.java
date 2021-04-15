@@ -13,7 +13,7 @@ class EmailServiceImplTest {
 
     @Test
     void availabilityHtmlFileTest() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/webapp/WEB_INF/html/mail.html"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("src/main/webapp/WEB-INF/html/mail.html"))) {
             String text = stream.map(String::new).collect(Collectors.joining());
             if ("".equals(text)) {
                 text = null;
