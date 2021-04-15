@@ -1,6 +1,7 @@
 package com.mosreg.hospital_rating.controller;
 
 import com.mosreg.hospital_rating.repository.UserRepo;
+import com.mosreg.hospital_rating.scheduled.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class UserController {
     @GetMapping("/mail/error/user")
     public String user(Model model) {
         model.addAttribute("users", userRepo.findUserBySendMailIsFalse());
+        model.addAttribute("count", ScheduledTasks.count);
         return "user";
     }
 }

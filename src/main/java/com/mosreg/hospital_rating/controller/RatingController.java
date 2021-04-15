@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Controller по приему данных по опросу
  **/
@@ -44,6 +47,9 @@ public class RatingController {
                 json.put("code", 200);
                 JSONArray jsArr = new JSONArray();
                 jsArr.put(json.toMap());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                user.setResponseQuestionnaireDate(simpleDateFormat.format(calendar.getTime()));
                 return new ResponseEntity<>(json.toMap(), HttpStatus.OK);
             } else {
                 json.put("isValid", false);

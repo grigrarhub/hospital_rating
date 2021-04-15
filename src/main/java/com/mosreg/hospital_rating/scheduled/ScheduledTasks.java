@@ -17,6 +17,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class ScheduledTasks {
 
+    public static int count = 0;
+
     private static final Logger log = Logger.getLogger(ScheduledTasks.class);
 
     @Autowired
@@ -31,12 +33,13 @@ public class ScheduledTasks {
     //Метод для отправки сообщения новым пользователям из БД в 8:00 утра
     @Scheduled(cron = "0 0 8 * * *")
     public void sendMessage() {
-        int count = 0;
+        count = 0;
         for (User user : userRepo.findUserBySendMailIsFalse()) {
             if (emailService.sendMail(user.getEmail(), user.getFullName(),
                     user.getFullDirectorName(), user.getHospitalName(), user.getUuid())) {
                 user.setSendMail(true);
                 userRepo.save(user);
+                log.info("Mail send to " + user.getFullName() + ". Email: " + user.getEmail());
             } else {
                 count++;
                 log.info("ID: " + user.getId()

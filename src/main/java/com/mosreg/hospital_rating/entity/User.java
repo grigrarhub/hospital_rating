@@ -22,6 +22,9 @@ public class User {
     private String email;
     private String fullDirectorName;
     private String hospitalName;
+    private String birthday;
+    private String dischargeDate;
+    private String responseQuestionnaireDate;
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uuid = UUID.randomUUID().toString();
@@ -33,10 +36,13 @@ public class User {
     public User() {
     }
 
-    public User(String fullName, String email, String fullDirectorName, String hospitalName) {
+    public User(String fullName, String email, String fullDirectorName, String hospitalName,
+                String birthday, String dischargeDate) {
         this.fullName = fullName;
         this.email = email;
         this.fullDirectorName = fullDirectorName;
         this.hospitalName = hospitalName;
+        this.birthday = birthday;
+        this.dischargeDate = dischargeDate;
     }
 }

@@ -4,7 +4,7 @@ import com.mosreg.hospital_rating.dao.DataParserDao;
 import com.mosreg.hospital_rating.entity.User;
 import com.mosreg.hospital_rating.repository.UserRepo;
 import com.mosreg.hospital_rating.service.DataParseService;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +14,9 @@ import java.util.List;
  * Класс для получения данных из БД и заполнение этими данными другую БД
  **/
 @Service
-@Slf4j
 public class DataParseServiceImpl implements DataParseService {
+
+    private static final Logger log = Logger.getLogger(DataParseServiceImpl.class);
 
     @Autowired
     private DataParserDao dataParserDao;
@@ -31,13 +32,15 @@ public class DataParseServiceImpl implements DataParseService {
     //Добавление данных полученных JDBC запросом из БД в новую БД для рейтинга больницы
     @Override
     public void addDataToNewBd() {
+        int count = 0;
         for (User user : pullDataFromDB()) {
             user.setFullName(toUpperCaseForFirstLetter(user.getFullName()));
             user.setFullDirectorName(toUpperCaseForFirstLetter(user.getFullDirectorName()));
-            userRepo.save(new User(user.getFullName(),
-                    user.getEmail(), user.getFullDirectorName(), user.getHospitalName()));
+            userRepo.save(new User(user.getFullName(), user.getEmail(), user.getFullDirectorName(),
+                    user.getHospitalName(), user.getBirthday(), user.getDischargeDate()));
+            count++;
         }
-        log.info("Database updated by new users");
+        log.info("Database updated in quantity " + count + " new users.");
     }
 
     private static String toUpperCaseForFirstLetter(String inputText) {

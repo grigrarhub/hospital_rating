@@ -3,6 +3,7 @@ package com.mosreg.hospital_rating.dao.impl;
 import com.mosreg.hospital_rating.config.DatabaseConfig;
 import com.mosreg.hospital_rating.dao.DataParserDao;
 import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -78,7 +79,9 @@ public class DataParserDaoImpl implements DataParserDao {
                     + " " + resultSet.getString("Person_secname"))
                     .setEmail(resultSet.getString("mail"))
                     .setFullDirectorName(resultSet.getString("OrgHeadPerson_Fio"))
-                    .setHospitalName(resultSet.getString("lpu_name"));
+                    .setHospitalName(resultSet.getString("lpu_name"))
+                    .setBirthday(resultSet.getString("Person_birthday"))
+                    .setDischargeDate(resultSet.getString("EvnPS_disDT"));
         }
     }
 }

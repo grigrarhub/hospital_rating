@@ -1,7 +1,6 @@
 package com.mosreg.hospital_rating.service.impl;
 
 import com.mosreg.hospital_rating.service.EmailService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,28 +34,30 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @SneakyThrows
     @Override
     //Отправить сообщение
     public boolean sendMail(String to, String fullName, String fullDirectorName, String hospitalName, String UUID) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-        if (isValidMail(to)) {
-            if (!(StringUtils.isBlank(fullName)
-                    || StringUtils.isBlank(fullDirectorName)
-                    || StringUtils.isBlank(hospitalName))) {
-                helper.setTo(to);
-                helper.setText(Objects.requireNonNull(requestFromFile())
-                        .replace("fullName", fullName)
-                        .replace("fullDirectorName", fullDirectorName)
-                        .replace("hospitalName", hospitalName)
-                        .replace("UUID", UUID), true);
-                helper.setFrom(mailSendFrom);
-                helper.setSubject(DEFAULT_TOPIC);
-                javaMailSender.send(mimeMessage);
-                log.info("Mail send to " + fullName + ". Email: " + to);
-                return true;
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+            if (isValidMail(to)) {
+                if (!(StringUtils.isBlank(fullName)
+                        || StringUtils.isBlank(fullDirectorName)
+                        || StringUtils.isBlank(hospitalName))) {
+                    helper.setTo(to);
+                    helper.setText(Objects.requireNonNull(requestFromFile())
+                            .replace("fullName", fullName)
+                            .replace("fullDirectorName", fullDirectorName)
+                            .replace("hospitalName", hospitalName)
+                            .replace("UUID", UUID), true);
+                    helper.setFrom(mailSendFrom);
+                    helper.setSubject(DEFAULT_TOPIC);
+                    javaMailSender.send(mimeMessage);
+                    return true;
+                }
             }
+        } catch (MessagingException e) {
+            log.error("Mail doesn't send to " + to, e);
         }
         return false;
     }
