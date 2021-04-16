@@ -3,9 +3,10 @@ package com.mosreg.hospital_rating.dao.impl;
 import com.mosreg.hospital_rating.config.DatabaseConfig;
 import com.mosreg.hospital_rating.dao.DataParserDao;
 import com.mosreg.hospital_rating.entity.User;
-import com.mosreg.hospital_rating.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +30,9 @@ import java.util.stream.Stream;
 @Repository
 @Slf4j
 public class DataParserDaoImpl implements DataParserDao {
+
+    @Value("classpath:view/sql/request.sql")
+    private Resource sql;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -41,7 +46,7 @@ public class DataParserDaoImpl implements DataParserDao {
             Connection connection = databaseConfig.dataSource().getConnection();
             log.debug("Connection for DBMS complete");
             jdbcTemplate.setDataSource(databaseConfig.dataSource());
-            List<User> list = jdbcTemplate.query(String.format("SELECT * FROM mrds.call_back_stac WHERE \"EvnPS_disDT\" = %s", getData())
+            List<User> list = jdbcTemplate.query(String.format(Objects.requireNonNull(requestFromFile()), getData())
                     , new PatientMapper());
             connection.close();
             log.debug("Disconnection for DBMS complete");
@@ -54,7 +59,7 @@ public class DataParserDaoImpl implements DataParserDao {
 
     //Реализация JDBC запроса из стороннего файла
     private String requestFromFile() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/db/sql/request.sql"))) {
+        try (Stream<String> stream = Files.lines(Paths.get(sql.getURI()))) {
             log.debug("HTML file successfully read");
             return stream.map(String::new).collect(Collectors.joining());
         } catch (IOException e) {

@@ -10,7 +10,8 @@
     </parent>
     <groupId>com.mosreg.hospital_rating</groupId>
     <artifactId>hospital_rating</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
+    <packaging>war</packaging>
     <name>hospital_rating</name>
     <description>Service to send mail and collection of information</description>
     <properties>

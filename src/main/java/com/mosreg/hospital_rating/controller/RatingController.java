@@ -37,7 +37,6 @@ public class RatingController {
             if (user.getResults() == null) {
                 if (result.getDont_visit() == 0) {
                     user.setResults(result);
-                    userRepo.save(user);
                     log.info("ID: " + user.getId()
                             + ". Full name: " + user.getFullName()
                             + ". Email: " + user.getEmail() + " sent a questionnaire");
@@ -50,6 +49,7 @@ public class RatingController {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar calendar = Calendar.getInstance();
                 user.setResponseQuestionnaireDate(simpleDateFormat.format(calendar.getTime()));
+                userRepo.save(user);
                 return new ResponseEntity<>(json.toMap(), HttpStatus.OK);
             } else {
                 json.put("isValid", false);

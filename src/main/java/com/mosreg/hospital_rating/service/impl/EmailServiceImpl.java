@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,6 +30,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Value("${mail.sent.mail}")
     private String mailSendFrom;
+
+    @Value("classpath:/view/html/mail.html")
+    private static Resource html;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -56,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
                     return true;
                 }
             }
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Mail doesn't send to " + to, e);
         }
         return false;
@@ -76,8 +79,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     //Метод для выкачки текста html из файла
-    private String requestFromFile() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/webapp/WEB-INF/html/mail.html"))) {
+    public String requestFromFile() {
+        try (Stream<String> stream = Files.lines(Paths.get(Objects.requireNonNull(html.getURI())))) {
             log.debug("HTML file successfully read");
             return stream.map(String::new).collect(Collectors.joining());
         } catch (IOException e) {
