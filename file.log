@@ -1301,3 +1301,4 @@ INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user
 2021-04-16 08:49:05 INFO  ScheduledTasks:42 - Mail send to Головко Нина Васильевна. Email: uliana.torgersen@yandex.ru
 2021-04-16 08:49:05 INFO  ScheduledTasks:52 - Number of unsent messages: 0.
 INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user
+2021-04-16 11:18:55 INFO  DataParseServiceImpl:44 - Database updated in quantity 509 new users.

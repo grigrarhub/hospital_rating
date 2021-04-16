@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Класс запросов для получения данных из БД
@@ -31,7 +29,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class DataParserDaoImpl implements DataParserDao {
 
-    @Value("classpath:view/sql/request.sql")
+    @Value("classpath:request.sql")
     private Resource sql;
 
     @Autowired
@@ -59,9 +57,13 @@ public class DataParserDaoImpl implements DataParserDao {
 
     //Реализация JDBC запроса из стороннего файла
     private String requestFromFile() {
-        try (Stream<String> stream = Files.lines(Paths.get(sql.getURI()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(sql.getInputStream()))) {
+            StringBuilder line = new StringBuilder("");
+            while (reader.ready()) {
+                line.append(reader.readLine());
+            }
             log.debug("HTML file successfully read");
-            return stream.map(String::new).collect(Collectors.joining());
+            return line.toString();
         } catch (IOException e) {
             log.error("Html file doesn't found\n", e);
         }

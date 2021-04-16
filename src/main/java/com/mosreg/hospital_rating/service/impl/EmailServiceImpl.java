@@ -11,13 +11,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Класс для отправки сообщения
@@ -31,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
     @Value("${mail.sent.mail}")
     private String mailSendFrom;
 
-    @Value("classpath:/view/html/mail.html")
+    @Value("classpath:mail.html")
     private static Resource html;
 
     @Autowired
@@ -80,9 +78,13 @@ public class EmailServiceImpl implements EmailService {
 
     //Метод для выкачки текста html из файла
     public String requestFromFile() {
-        try (Stream<String> stream = Files.lines(Paths.get(Objects.requireNonNull(html.getURI())))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(html.getInputStream()))) {
+            StringBuilder line = new StringBuilder("");
+            while (reader.ready()) {
+                line.append(reader.readLine());
+            }
             log.debug("HTML file successfully read");
-            return stream.map(String::new).collect(Collectors.joining());
+            return line.toString();
         } catch (IOException e) {
             log.error("Html file doesn't found\n", e);
         }

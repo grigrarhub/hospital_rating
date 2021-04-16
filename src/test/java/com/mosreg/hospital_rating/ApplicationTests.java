@@ -21,10 +21,10 @@ class ApplicationTests {
     @Autowired
     EmailServiceImpl emailService;
 
-    @Value("classpath:view/html/mail.html")
+    @Value("classpath:mail.html")
     private Resource html;
 
-    @Value("classpath:view/sql/request.sql")
+    @Value("classpath:request.sql")
     private Resource sql;
 
     @Test
@@ -34,7 +34,7 @@ class ApplicationTests {
     @Test
     void availabilityHtmlFileTest() {
         try (Stream<String> absolutelyPath =
-                     Files.lines(Paths.get("src/main/resources/view/html/mail.html"));
+                     Files.lines(Paths.get("src/main/resources/mail.html"));
              Stream<String> relativePath =
                      Files.lines(Paths.get(Objects.requireNonNull(html.getURI())))) {
             String textByAbsolutelyPath = absolutelyPath.map(String::new).collect(Collectors.joining());
@@ -52,7 +52,7 @@ class ApplicationTests {
     @Test
     void availabilitySqlFileTest() {
         try (Stream<String> absolutelyPath =
-                     Files.lines(Paths.get("src/main/resources/view/sql/request.sql"));
+                     Files.lines(Paths.get("src/main/resources/request.sql"));
              Stream<String> relativePath =
                      Files.lines(Paths.get(Objects.requireNonNull(sql.getURI())))) {
             String textByAbsolutelyPath = absolutelyPath.map(String::new).collect(Collectors.joining());
