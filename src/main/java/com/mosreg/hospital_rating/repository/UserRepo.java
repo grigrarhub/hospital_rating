@@ -15,4 +15,10 @@ public interface UserRepo extends JpaRepository<User, Long> {
     List<User> findUserBySendMailIsFalse();
 
     User findUserByUuid(String uuid);
+
+    List<User> findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(String name,
+                                                                                     String email,
+                                                                                     String hospitalName,
+                                                                                     String birthday,
+                                                                                     String dischargeDate);
 }

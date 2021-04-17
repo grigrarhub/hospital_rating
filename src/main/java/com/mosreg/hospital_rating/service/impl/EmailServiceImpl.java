@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
     private String mailSendFrom;
 
     @Value("classpath:mail.html")
-    private static Resource html;
+    private Resource html;
 
     @Autowired
     private JavaMailSender javaMailSender;

@@ -53,7 +53,8 @@ public class ScheduledTasks {
     }
 
     //Метод для обновления БД с пользователями в 7:00 утра
-    @Scheduled(cron = "0 0 7 * * *")
+    //Сервер отстает на 3 часа
+    @Scheduled(cron = "0 0 4 * * *")
     public void addNewUsers() {
         dataParseService.addDataToNewBd();
     }

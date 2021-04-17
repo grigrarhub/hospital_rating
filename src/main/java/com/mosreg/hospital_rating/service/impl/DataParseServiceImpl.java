@@ -36,9 +36,17 @@ public class DataParseServiceImpl implements DataParseService {
         for (User user : pullDataFromDB()) {
             user.setFullName(toUpperCaseForFirstLetter(user.getFullName()));
             user.setFullDirectorName(toUpperCaseForFirstLetter(user.getFullDirectorName()));
-            userRepo.save(new User(user.getFullName(), user.getEmail(), user.getFullDirectorName(),
-                    user.getHospitalName(), user.getBirthday(), user.getDischargeDate()));
-            count++;
+            List<User> users = userRepo.findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(
+                    user.getFullName(),
+                    user.getEmail(),
+                    user.getHospitalName(),
+                    user.getBirthday(),
+                    user.getDischargeDate());
+            if (users.isEmpty()) {
+                userRepo.save(new User(user.getFullName(), user.getEmail(), user.getFullDirectorName(),
+                        user.getHospitalName(), user.getBirthday(), user.getDischargeDate()));
+                count++;
+            }
         }
         log.info("Database updated in quantity " + count + " new users.");
     }
