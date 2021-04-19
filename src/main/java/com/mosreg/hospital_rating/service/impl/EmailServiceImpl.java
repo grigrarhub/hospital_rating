@@ -3,6 +3,7 @@ package com.mosreg.hospital_rating.service.impl;
 import com.mosreg.hospital_rating.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -15,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * Класс для отправки сообщения
@@ -65,15 +65,8 @@ public class EmailServiceImpl implements EmailService {
 
     //Проверка на валидность e-mail
     private boolean isValidMail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        if (email == null) {
-            return false;
-        }
-        return pattern.matcher(email).matches();
+        EmailValidator validator = EmailValidator.getInstance();
+        return validator.isValid(email);
     }
 
     //Метод для выкачки текста html из файла
