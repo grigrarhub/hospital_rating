@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch (RuntimeException | MessagingException e) {
             log.error("Mail doesn't send to " + to, e);
         }
         return false;
