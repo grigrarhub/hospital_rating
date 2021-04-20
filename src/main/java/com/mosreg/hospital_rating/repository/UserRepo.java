@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Repository для работы с БД
- **/
+ */
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 

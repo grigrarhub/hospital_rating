@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Класс для получения данных из БД и заполнение этими данными другую БД
- **/
+ */
 @Service
 public class DataParseServiceImpl implements DataParseService {
 

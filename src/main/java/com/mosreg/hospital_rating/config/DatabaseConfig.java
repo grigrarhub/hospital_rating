@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 /**
  * Конфигурация для подключения ко второй БД для доступа к людям выписанным из стационара
- **/
+ */
 @Configuration
 public class DatabaseConfig {
 

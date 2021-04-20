@@ -1,7 +1,6 @@
 package com.mosreg.hospital_rating.entity;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
@@ -9,9 +8,8 @@ import java.util.UUID;
 
 /**
  * Entity пользователя для БД
- **/
+ */
 @Entity
-@Accessors(chain = true)
 @Data
 @Table(name = "user_entity")
 public class User {
