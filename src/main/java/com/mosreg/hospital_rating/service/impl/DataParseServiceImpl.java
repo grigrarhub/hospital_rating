@@ -36,13 +36,7 @@ public class DataParseServiceImpl implements DataParseService {
         for (User user : pullDataFromDB()) {
             user.setFullName(toUpperCaseForFirstLetter(user.getFullName()));
             user.setFullDirectorName(toUpperCaseForFirstLetter(user.getFullDirectorName()));
-            List<User> users = userRepo.findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(
-                    user.getFullName(),
-                    user.getEmail(),
-                    user.getHospitalName(),
-                    user.getBirthday(),
-                    user.getDischargeDate());
-            if (users.isEmpty()) {
+            if (checkForRepeatUsersIsEmpty(user)) {
                 userRepo.save(new User(user.getFullName(), user.getEmail(), user.getFullDirectorName(),
                         user.getHospitalName(), user.getBirthday(), user.getDischargeDate()));
                 count++;
@@ -64,5 +58,15 @@ public class DataParseServiceImpl implements DataParseService {
                 builder.setCharAt(i, Character.toUpperCase(text.charAt(i)));
             }
         return builder.toString();
+    }
+
+    private boolean checkForRepeatUsersIsEmpty(User user) {
+        List<User> users = userRepo.findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(
+                user.getFullName(),
+                user.getEmail(),
+                user.getHospitalName(),
+                user.getBirthday(),
+                user.getDischargeDate());
+        return users.isEmpty();
     }
 }
