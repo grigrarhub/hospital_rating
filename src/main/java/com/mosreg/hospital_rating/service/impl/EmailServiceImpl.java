@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
 
     public static int COUNT_OF_UNSENT_MAIL;
 
-    public static List<User> USERS_WITH_INCORRECT_DATA;
+    public static List<User> USERS_WITH_INCORRECT_DATA = new ArrayList<>();
 
     private static final String DEFAULT_TOPIC = "Оценка стационара по результатам пребывания";
 
@@ -65,12 +66,17 @@ public class EmailServiceImpl implements EmailService {
                 COUNT_OF_UNSENT_MAIL++;
                 USERS_WITH_INCORRECT_DATA.add(user);
                 log.info("ID: " + user.getId()
-                        + "Incorrect email: " + user.getEmail());
+                        + ". Incorrect email: " + user.getEmail());
                 continue;
             }
             if (sendMail(user.getEmail(), user.getFullName(), user.getFullDirectorName(), user.getHospitalName(), user.getUuid())) {
                 user.setSendMail(true);
                 userRepo.save(user);
+            } else {
+                COUNT_OF_UNSENT_MAIL++;
+                USERS_WITH_INCORRECT_DATA.add(user);
+                log.info("ID: " + user.getId()
+                        + ". Recipient address rejected: Access denied. Incorrect email: " + user.getEmail());
             }
         }
         log.info("Number of unsent messages: " + COUNT_OF_UNSENT_MAIL + ".\n" +
@@ -92,9 +98,7 @@ public class EmailServiceImpl implements EmailService {
             javaMailSender.send(mimeMessage);
             log.info("Mail send to " + fullName + ". Email: " + to);
             return true;
-
-        } catch (RuntimeException | MessagingException | IOException e) {
-            log.error("Mail doesn't send to " + to, e);
+        } catch (RuntimeException | MessagingException | IOException ignored) {
         }
         return false;
     }

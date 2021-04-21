@@ -68,8 +68,8 @@ public class DataParserDaoImpl implements DataParserDao {
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
             return new User(resultSet.getString("Person_surname")
-                    + resultSet.getString("Person_firname")
-                    + resultSet.getString("Person_secname"),
+                    + " " + resultSet.getString("Person_firname")
+                    + " " + resultSet.getString("Person_secname"),
                     resultSet.getString("mail"),
                     resultSet.getString("OrgHeadPerson_Fio"),
                     resultSet.getString("lpu_name"),
