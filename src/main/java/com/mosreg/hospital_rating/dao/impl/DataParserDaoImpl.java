@@ -45,11 +45,12 @@ public class DataParserDaoImpl implements DataParserDao {
             Connection connection = databaseConfig.dataSource().getConnection();
             log.debug("Connection for DBMS complete");
             jdbcTemplate.setDataSource(databaseConfig.dataSource());
-            List<User> list = jdbcTemplate.query(String.format(fileReaderService.requestFromFile(sql.getInputStream()), getData())
+            List<User> usersList = jdbcTemplate.query(String
+                            .format(fileReaderService.requestFromFile(sql.getInputStream()), getData())
                     , new PatientMapper());
             connection.close();
             log.debug("Disconnection for DBMS complete");
-            return list;
+            return usersList;
         } catch (SQLException | IOException throwable) {
             log.error("SQL Error", throwable); // обработка ошибок DriverManager.getConnection
         }

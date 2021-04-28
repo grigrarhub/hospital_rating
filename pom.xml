@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.mosreg.hospital_rating</groupId>
     <artifactId>hosp_rat</artifactId>
-    <version>3.0</version>
+    <version>3.1</version>
     <packaging>war</packaging>
-    <name>hosp_rat</name>
+    <name>hosp_rating</name>
     <description>Service to send mail and collection of information</description>
     <properties>
         <java.version>8</java.version>

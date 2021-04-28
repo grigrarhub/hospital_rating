@@ -241,3 +241,12 @@ INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user
 2021-04-21 09:55:27 INFO  EmailServiceImpl:78 - ID: 14693. Recipient address rejected: Access denied. Incorrect email: cgft@mail.ru
 2021-04-21 09:58:22 INFO  EmailServiceImpl:78 - ID: 14703. Recipient address rejected: Access denied. Incorrect email: 12345@mail.ru
 2021-04-21 09:58:22 INFO  EmailServiceImpl:78 - ID: 14730. Recipient address rejected: Access denied. Incorrect email: miknalchenko_66@mail.ru
+2021-04-28 08:35:20 INFO  RatingController:57 - Questionnaire already done
+2021-04-28 08:38:49 INFO  RatingController:70 - User UUID doesn't found
+2021-04-28 08:39:16 INFO  RatingController:70 - User UUID doesn't found
+2021-04-28 08:39:29 INFO  RatingController:57 - Questionnaire already done
+2021-04-28 08:40:37 INFO  RatingController:52 - ID: 18651. Full name: Керничанский Владислав Маркович. Email: vladislavkernichansky@yandex.ru sent a questionnaire
+2021-04-28 08:42:36 INFO  RatingController:53 - ID: 18651. Full name: Керничанский Владислав Маркович. Email: vladislavkernichansky@yandex.ru sent a questionnaire
+2021-04-28 08:43:21 INFO  RatingController:58 - Questionnaire already done
+2021-04-28 08:44:49 INFO  RatingController:71 - User UUID doesn't found
+2021-04-28 08:45:52 INFO  RatingController:53 - ID: 18651. Full name: Керничанский Владислав Маркович. Email: vladislavkernichansky@yandex.ru sent a questionnaire

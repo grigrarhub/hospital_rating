@@ -45,7 +45,7 @@ public class DataParseServiceImpl implements DataParseService {
         log.info("Database updated in quantity " + count + " new users.");
     }
 
-    private static String toUpperCaseForFirstLetter(String inputText) {
+    private String toUpperCaseForFirstLetter(String inputText) {
         String text = inputText.toLowerCase();
         StringBuilder builder = new StringBuilder(text);
         //Выставляем первый символ заглавным, если это буква

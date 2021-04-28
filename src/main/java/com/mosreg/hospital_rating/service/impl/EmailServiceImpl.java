@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
 
     public static int COUNT_OF_UNSENT_MAIL;
 
-    public static List<User> USERS_WITH_INCORRECT_DATA = new ArrayList<>();
+    public static List<User> USERS_WITH_INCORRECT_DATA;
 
     private static final String DEFAULT_TOPIC = "Оценка стационара по результатам пребывания";
 
@@ -52,6 +52,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendMail() {
         COUNT_OF_UNSENT_MAIL = 0;
+        USERS_WITH_INCORRECT_DATA = new ArrayList<>();
         for (User user : userRepo.findUserBySendMailIsFalse()) {
             if (isEmptyData(user.getFullName(), user.getFullDirectorName(), user.getHospitalName())) {
                 COUNT_OF_UNSENT_MAIL++;
