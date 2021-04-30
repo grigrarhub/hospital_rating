@@ -250,3 +250,8 @@ INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user
 2021-04-28 08:43:21 INFO  RatingController:58 - Questionnaire already done
 2021-04-28 08:44:49 INFO  RatingController:71 - User UUID doesn't found
 2021-04-28 08:45:52 INFO  RatingController:53 - ID: 18651. Full name: Керничанский Владислав Маркович. Email: vladislavkernichansky@yandex.ru sent a questionnaire
+2021-04-29 15:41:33 INFO  EmailServiceImpl:99 - Mail send to Пчелинцев Кирилл Вадимович. Email: pchl96@yandex.ru
+2021-04-29 15:41:37 INFO  EmailServiceImpl:82 - Number of unsent messages: 0.
+INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user
+2021-04-30 12:49:52 INFO  RatingController:62 - Questionnaire already done. User zaychenko.y@gmail.com try to reply second time
+2021-04-30 12:52:04 INFO  RatingController:71 - User UUID doesn't found

@@ -33,14 +33,17 @@ public class RatingController {
                                                         @PathVariable String uuid) {
         try {
             json = new JSONObject();
-            return saveUserQuestionnaireAndCreateJsonAnswer(result, uuid);
-        } catch (Exception e) {
+            return saveUserQuestionnaireAndSendJsonAnswer(result, uuid);
+        } catch (NullPointerException e) {
             return uuidNotFound();
         }
     }
 
-    private ResponseEntity<Object> saveUserQuestionnaireAndCreateJsonAnswer(Result result, String uuid) {
+    private ResponseEntity<Object> saveUserQuestionnaireAndSendJsonAnswer(Result result, String uuid) {
         User user = userRepo.findUserByUuid(uuid);
+        if (user == null) {
+            throw new NullPointerException();
+        }
         if (user.getResults() == null) {
             if (result.getDont_visit() == 0) {
                 user.setResults(result);
@@ -56,13 +59,15 @@ public class RatingController {
                     + ". Email: " + user.getEmail() + " sent a questionnaire");
             return new ResponseEntity<>(json.toMap(), HttpStatus.OK);
         } else {
-            log.info("Questionnaire already done");
+            log.info("Questionnaire already done. User: id - "
+                    + user.getId() + ". Email - "
+                    + user.getEmail() + " try to reply second time");
             return new ResponseEntity<>(fillJsonModel
                     (json, "Questionnaire already done").toMap(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    private ResponseEntity<Object> uuidNotFound () {
+    private ResponseEntity<Object> uuidNotFound() {
         log.info("User UUID doesn't found");
         return new ResponseEntity<>(fillJsonModel
                 (json, "UUID doesn't found").toMap(), HttpStatus.BAD_REQUEST);

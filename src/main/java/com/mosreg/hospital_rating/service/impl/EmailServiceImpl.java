@@ -80,8 +80,10 @@ public class EmailServiceImpl implements EmailService {
                         + ". Recipient address rejected: Access denied. Incorrect email: " + user.getEmail());
             }
         }
-        log.info("Number of unsent messages: " + COUNT_OF_UNSENT_MAIL + ".\n" +
-                "INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user");
+        log.info("\n_________________________________________________________________________________\n"
+                + "                          Number of unsent messages: " + COUNT_OF_UNSENT_MAIL + ".\n"
+                + "INFO: You can see this users by: 10.3.124.13:2220/questionnaire/mail/error/user\n"
+                + "________________________________________________________________________________");
     }
 
     private boolean sendMail(String to, String fullName, String fullDirectorName, String hospitalName, String UUID) {
