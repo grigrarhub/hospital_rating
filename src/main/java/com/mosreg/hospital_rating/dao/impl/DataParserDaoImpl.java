@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,7 +46,7 @@ public class DataParserDaoImpl implements DataParserDao {
             jdbcTemplate.setDataSource(databaseConfig.dataSource());
             List<User> usersList = jdbcTemplate.query(String
                             .format(fileReaderService.requestFromFile(sql.getInputStream()), getData())
-                    , new PatientMapper());
+                    , PatientMapper);
             connection.close();
             log.debug("Disconnection for DBMS complete");
             return usersList;
@@ -65,17 +64,15 @@ public class DataParserDaoImpl implements DataParserDao {
         return "'" + simpleDateFormat.format(calendar.getTime()) + "'";
     }
 
-    private static final class PatientMapper implements RowMapper<User> {
-        @Override
-        public User mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new User(resultSet.getString("Person_surname")
+    private final RowMapper<User> PatientMapper = (resultSet, i) -> new User(
+
+            resultSet.getString("Person_surname")
                     + " " + resultSet.getString("Person_firname")
                     + " " + resultSet.getString("Person_secname"),
-                    resultSet.getString("mail"),
-                    resultSet.getString("OrgHeadPerson_Fio"),
-                    resultSet.getString("lpu_name"),
-                    resultSet.getString("Person_birthday"),
-                    resultSet.getString("EvnPS_disDT"));
-        }
-    }
+
+            resultSet.getString("mail"),
+            resultSet.getString("OrgHeadPerson_Fio"),
+            resultSet.getString("lpu_name"),
+            resultSet.getString("Person_birthday"),
+            resultSet.getString("EvnPS_disDT"));
 }

@@ -31,8 +31,8 @@ public class RatingController {
     @PostMapping("/user/{uuid}")
     public ResponseEntity<Object> receiveHospitalRating(@RequestBody Result result,
                                                         @PathVariable String uuid) {
+        json = new JSONObject();
         try {
-            json = new JSONObject();
             return saveUserQuestionnaireAndSendJsonAnswer(result, uuid);
         } catch (NullPointerException e) {
             return uuidNotFound();
@@ -45,35 +45,31 @@ public class RatingController {
             throw new NullPointerException();
         }
         if (user.getResults() == null) {
+            //Если опрашиваемый нажал на странице опросника ссылку "Я не посещал ...", то Dont_visit = 1.
             if (result.getDont_visit() == 0) {
                 user.setResults(result);
             }
-            json.put("isValid", true);
-            json.put("code", 200);
-
-            setResponseDate(user);
-
+            setResponseQuestionnaireDate(user);
             userRepo.save(user);
+
             log.info("ID: " + user.getId()
                     + ". Full name: " + user.getFullName()
                     + ". Email: " + user.getEmail() + " sent a questionnaire");
+
+            json.put("isValid", true);
+            json.put("code", 200);
             return new ResponseEntity<>(json.toMap(), HttpStatus.OK);
         } else {
             log.info("Questionnaire already done. User: id - "
                     + user.getId() + ". Email - "
                     + user.getEmail() + " try to reply second time");
+
             return new ResponseEntity<>(fillJsonModel
                     (json, "Questionnaire already done").toMap(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    private ResponseEntity<Object> uuidNotFound() {
-        log.info("User UUID doesn't found");
-        return new ResponseEntity<>(fillJsonModel
-                (json, "UUID doesn't found").toMap(), HttpStatus.BAD_REQUEST);
-    }
-
-    private void setResponseDate(User user) {
+    private void setResponseQuestionnaireDate(User user) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         user.setResponseQuestionnaireDate(simpleDateFormat.format(calendar.getTime()));
@@ -85,5 +81,12 @@ public class RatingController {
         json.put("message", message);
         json.put("messageCode", 400);
         return json;
+    }
+
+    private ResponseEntity<Object> uuidNotFound() {
+        log.info("User UUID doesn't found");
+
+        return new ResponseEntity<>(fillJsonModel
+                (json, "UUID doesn't found").toMap(), HttpStatus.BAD_REQUEST);
     }
 }

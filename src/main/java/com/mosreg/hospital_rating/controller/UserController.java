@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Controller по отображению данных о людях с неполными данными для отправки email
+ * Controller по отображению данных о людях с неполными данными
+ * для отправки email по ссылке 10.3.124.13:2220/questionnaire/mail/error/user
  */
 @Controller
 @RequestMapping("/questionnaire")

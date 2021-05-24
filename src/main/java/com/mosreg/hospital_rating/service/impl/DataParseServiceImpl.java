@@ -24,11 +24,6 @@ public class DataParseServiceImpl implements DataParseService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    public List<User> pullDataFromDB() {
-        return dataParserDao.receiveListRequest();
-    }
-
     //Добавление данных полученных JDBC запросом из БД в новую БД для рейтинга больницы
     @Override
     public void addDataToNewBd() {
@@ -43,6 +38,11 @@ public class DataParseServiceImpl implements DataParseService {
             }
         }
         log.info("Database updated in quantity " + count + " new users.");
+    }
+
+    @Override
+    public List<User> pullDataFromDB() {
+        return dataParserDao.receiveListRequest();
     }
 
     private String toUpperCaseForFirstLetter(String inputText) {
