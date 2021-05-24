@@ -3,6 +3,7 @@ package com.mosreg.hospital_rating.dao.impl;
 import com.mosreg.hospital_rating.config.DatabaseConfig;
 import com.mosreg.hospital_rating.dao.DataParserDao;
 import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.service.FileReaderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,20 +12,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Класс запросов для получения данных из БД
- **/
+ */
 @Repository
 @Slf4j
 public class DataParserDaoImpl implements DataParserDao {
@@ -38,34 +35,23 @@ public class DataParserDaoImpl implements DataParserDao {
     @Autowired
     private DatabaseConfig databaseConfig;
 
+    @Autowired
+    private FileReaderService fileReaderService;
+
     @Override
     public List<User> receiveListRequest() {
         try {
             Connection connection = databaseConfig.dataSource().getConnection();
             log.debug("Connection for DBMS complete");
             jdbcTemplate.setDataSource(databaseConfig.dataSource());
-            List<User> list = jdbcTemplate.query(String.format(Objects.requireNonNull(requestFromFile()), getData())
-                    , new PatientMapper());
+            List<User> usersList = jdbcTemplate.query(String
+                            .format(fileReaderService.requestFromFile(sql.getInputStream()), getData())
+                    , PatientMapper);
             connection.close();
             log.debug("Disconnection for DBMS complete");
-            return list;
-        } catch (SQLException throwable) {
+            return usersList;
+        } catch (SQLException | IOException throwable) {
             log.error("SQL Error", throwable); // обработка ошибок DriverManager.getConnection
-        }
-        return null;
-    }
-
-    //Реализация JDBC запроса из стороннего файла
-    private String requestFromFile() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(sql.getInputStream()))) {
-            StringBuilder line = new StringBuilder("");
-            while (reader.ready()) {
-                line.append(reader.readLine());
-            }
-            log.debug("HTML file successfully read");
-            return line.toString();
-        } catch (IOException e) {
-            log.error("Html file doesn't found\n", e);
         }
         return null;
     }
@@ -78,17 +64,15 @@ public class DataParserDaoImpl implements DataParserDao {
         return "'" + simpleDateFormat.format(calendar.getTime()) + "'";
     }
 
-    private static final class PatientMapper implements RowMapper<User> {
-        @Override
-        public User mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new User().setFullName(resultSet.getString("Person_surname")
+    private final RowMapper<User> PatientMapper = (resultSet, i) -> new User(
+
+            resultSet.getString("Person_surname")
                     + " " + resultSet.getString("Person_firname")
-                    + " " + resultSet.getString("Person_secname"))
-                    .setEmail(resultSet.getString("mail"))
-                    .setFullDirectorName(resultSet.getString("OrgHeadPerson_Fio"))
-                    .setHospitalName(resultSet.getString("lpu_name"))
-                    .setBirthday(resultSet.getString("Person_birthday"))
-                    .setDischargeDate(resultSet.getString("EvnPS_disDT"));
-        }
-    }
+                    + " " + resultSet.getString("Person_secname"),
+
+            resultSet.getString("mail"),
+            resultSet.getString("OrgHeadPerson_Fio"),
+            resultSet.getString("lpu_name"),
+            resultSet.getString("Person_birthday"),
+            resultSet.getString("EvnPS_disDT"));
 }

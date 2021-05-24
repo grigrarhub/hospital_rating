@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mosreg.hospital_rating</groupId>
-    <artifactId>hospital_rating</artifactId>
-    <version>2.0</version>
+    <artifactId>hosp_rat</artifactId>
+    <version>3.1</version>
     <packaging>war</packaging>
-    <name>hospital_rating</name>
+    <name>hosp_rating</name>
     <description>Service to send mail and collection of information</description>
     <properties>
         <java.version>8</java.version>
@@ -100,6 +100,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

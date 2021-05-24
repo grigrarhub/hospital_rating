@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 /**
  * Модель получения данных из Json.
- **/
+ */
 @Entity
 @Data
 public class Response {

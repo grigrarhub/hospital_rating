@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Класс для получения данных из БД и заполнение этими данными другую БД
- **/
+ */
 @Service
 public class DataParseServiceImpl implements DataParseService {
 
@@ -24,11 +24,6 @@ public class DataParseServiceImpl implements DataParseService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    public List<User> pullDataFromDB() {
-        return dataParserDao.receiveListRequest();
-    }
-
     //Добавление данных полученных JDBC запросом из БД в новую БД для рейтинга больницы
     @Override
     public void addDataToNewBd() {
@@ -36,13 +31,7 @@ public class DataParseServiceImpl implements DataParseService {
         for (User user : pullDataFromDB()) {
             user.setFullName(toUpperCaseForFirstLetter(user.getFullName()));
             user.setFullDirectorName(toUpperCaseForFirstLetter(user.getFullDirectorName()));
-            List<User> users = userRepo.findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(
-                    user.getFullName(),
-                    user.getEmail(),
-                    user.getHospitalName(),
-                    user.getBirthday(),
-                    user.getDischargeDate());
-            if (users.isEmpty()) {
+            if (checkForRepeatUsersIsEmpty(user)) {
                 userRepo.save(new User(user.getFullName(), user.getEmail(), user.getFullDirectorName(),
                         user.getHospitalName(), user.getBirthday(), user.getDischargeDate()));
                 count++;
@@ -51,7 +40,12 @@ public class DataParseServiceImpl implements DataParseService {
         log.info("Database updated in quantity " + count + " new users.");
     }
 
-    private static String toUpperCaseForFirstLetter(String inputText) {
+    @Override
+    public List<User> pullDataFromDB() {
+        return dataParserDao.receiveListRequest();
+    }
+
+    private String toUpperCaseForFirstLetter(String inputText) {
         String text = inputText.toLowerCase();
         StringBuilder builder = new StringBuilder(text);
         //Выставляем первый символ заглавным, если это буква
@@ -64,5 +58,15 @@ public class DataParseServiceImpl implements DataParseService {
                 builder.setCharAt(i, Character.toUpperCase(text.charAt(i)));
             }
         return builder.toString();
+    }
+
+    private boolean checkForRepeatUsersIsEmpty(User user) {
+        List<User> users = userRepo.findUsersByFullNameAndEmailAndHospitalNameAndBirthdayAndDischargeDate(
+                user.getFullName(),
+                user.getEmail(),
+                user.getHospitalName(),
+                user.getBirthday(),
+                user.getDischargeDate());
+        return users.isEmpty();
     }
 }

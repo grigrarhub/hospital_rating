@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 /**
  * Конфигурация для подключения ко второй БД для доступа к людям выписанным из стационара
- **/
+ */
 @Configuration
 public class DatabaseConfig {
 
@@ -24,13 +24,15 @@ public class DatabaseConfig {
     private Integer port;
 
     public DataSource dataSource() {
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String[] servers = {servername};
+        int[] ports = {port};
+
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
         dataSource.setServerNames(servers);
         dataSource.setDatabaseName(databaseName);
         dataSource.setUser(userName);
         dataSource.setPassword(password);
-        int[] ports = {port};
         dataSource.setPortNumbers(ports);
         return dataSource;
     }
