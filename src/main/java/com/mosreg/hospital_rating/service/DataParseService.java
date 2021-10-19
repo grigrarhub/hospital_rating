@@ -1,6 +1,6 @@
 package com.mosreg.hospital_rating.service;
 
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.domain.entity.User;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.mosreg.hospital_rating.service.impl;
 
-import com.mosreg.hospital_rating.dao.DataParserDao;
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.repository.dao.DataParserDao;
+import com.mosreg.hospital_rating.domain.entity.User;
 import com.mosreg.hospital_rating.repository.UserRepo;
 import com.mosreg.hospital_rating.service.DataParseService;
 import org.apache.log4j.Logger;

@@ -1,4 +1,4 @@
-package com.mosreg.hospital_rating.entity;
+package com.mosreg.hospital_rating.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

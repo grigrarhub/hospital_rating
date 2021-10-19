@@ -1,6 +1,6 @@
 package com.mosreg.hospital_rating.service.impl;
 
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.domain.entity.User;
 import com.mosreg.hospital_rating.repository.UserRepo;
 import com.mosreg.hospital_rating.service.EmailService;
 import com.mosreg.hospital_rating.service.FileReaderService;
@@ -57,17 +57,11 @@ public class EmailServiceImpl implements EmailService {
             if (isEmptyData(user.getFullName(), user.getFullDirectorName(), user.getHospitalName())) {
                 COUNT_OF_UNSENT_MAIL++;
                 USERS_WITH_INCORRECT_DATA.add(user);
-                log.info("ID: " + user.getId()
-                        + ". Incorrect: any parameters is empty. Full name: " + user.getFullName()
-                        + ". Full director name: " + user.getFullDirectorName()
-                        + ". Hospital name: " + user.getHospitalName());
                 continue;
             }
             if (!isValidMail(user.getEmail())) {
                 COUNT_OF_UNSENT_MAIL++;
                 USERS_WITH_INCORRECT_DATA.add(user);
-                log.info("ID: " + user.getId()
-                        + ". Incorrect email: " + user.getEmail());
                 continue;
             }
             if (sendMail(user.getEmail(), user.getFullName(), user.getFullDirectorName(), user.getHospitalName(), user.getUuid())) {
@@ -76,8 +70,6 @@ public class EmailServiceImpl implements EmailService {
             } else {
                 COUNT_OF_UNSENT_MAIL++;
                 USERS_WITH_INCORRECT_DATA.add(user);
-                log.info("ID: " + user.getId()
-                        + ". Recipient address rejected: Access denied. Incorrect email: " + user.getEmail());
             }
         }
         log.info("\n_________________________________________________________________________________\n"
@@ -102,8 +94,9 @@ public class EmailServiceImpl implements EmailService {
             log.info("Mail send to " + fullName + ". Email: " + to);
             return true;
         } catch (RuntimeException | MessagingException | IOException ignored) {
+            log.debug(ignored);
+            return false;
         }
-        return false;
     }
 
     //Проверка на валидность e-mail

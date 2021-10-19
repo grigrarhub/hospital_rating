@@ -1,7 +1,7 @@
 package com.mosreg.hospital_rating.controller;
 
-import com.mosreg.hospital_rating.entity.Result;
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.domain.dto.Result;
+import com.mosreg.hospital_rating.domain.entity.User;
 import com.mosreg.hospital_rating.repository.UserRepo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;

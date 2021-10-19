@@ -1,5 +1,6 @@
-package com.mosreg.hospital_rating.entity;
+package com.mosreg.hospital_rating.domain.entity;
 
+import com.mosreg.hospital_rating.domain.dto.Result;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 

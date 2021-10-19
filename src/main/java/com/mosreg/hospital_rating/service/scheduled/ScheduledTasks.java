@@ -1,4 +1,4 @@
-package com.mosreg.hospital_rating.scheduled;
+package com.mosreg.hospital_rating.service.scheduled;
 
 import com.mosreg.hospital_rating.service.DataParseService;
 import com.mosreg.hospital_rating.service.EmailService;
@@ -20,8 +20,8 @@ public class ScheduledTasks {
     @Autowired
     private DataParseService dataParseService;
 
-    //Метод для отправки сообщения новым пользователям из БД в 8:00 утра
-    @Scheduled(cron = "0 0 8 * * *")
+    //Метод для отправки сообщения новым пользователям из БД в 9:00 утра
+    @Scheduled(cron = "0 0 9 * * *")
     public void sendMessage() {
         emailService.sendMail();
     }

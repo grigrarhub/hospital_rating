@@ -1,8 +1,8 @@
-package com.mosreg.hospital_rating.dao.impl;
+package com.mosreg.hospital_rating.repository.dao.impl;
 
 import com.mosreg.hospital_rating.config.DatabaseConfig;
-import com.mosreg.hospital_rating.dao.DataParserDao;
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.repository.dao.DataParserDao;
+import com.mosreg.hospital_rating.domain.entity.User;
 import com.mosreg.hospital_rating.service.FileReaderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.mosreg.hospital_rating.dao;
+package com.mosreg.hospital_rating.repository.dao;
 
-import com.mosreg.hospital_rating.entity.User;
+import com.mosreg.hospital_rating.domain.entity.User;
 
 import java.util.List;
 
