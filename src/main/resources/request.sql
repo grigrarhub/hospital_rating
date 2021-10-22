@@ -1,0 +1,1 @@
+SELECT * FROM mrds.call_back_stac WHERE "EvnPS_disDT" = %s

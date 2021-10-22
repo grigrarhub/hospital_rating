@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface DataParseService {
     //Добавление пользователей из стационара в новую БД
-    void addDataToNewBd();
+    int addDataToNewBd();
     //Получение списка пользователей из БД
     List<User> pullDataFromDB();
 }

@@ -26,9 +26,11 @@ public class DataParseServiceImpl implements DataParseService {
 
     //Добавление данных полученных JDBC запросом из БД в новую БД для рейтинга больницы
     @Override
-    public void addDataToNewBd() {
+    public int addDataToNewBd() {
         int count = 0;
-        for (User user : pullDataFromDB()) {
+
+        List<User> users=pullDataFromDB();
+        for (User user : users) {
             user.setFullName(toUpperCaseForFirstLetter(user.getFullName()));
             user.setFullDirectorName(toUpperCaseForFirstLetter(user.getFullDirectorName()));
             if (checkForRepeatUsersIsEmpty(user)) {
@@ -38,6 +40,7 @@ public class DataParseServiceImpl implements DataParseService {
             }
         }
         log.info("Database updated in quantity " + count + " new users.");
+        return users.size();
     }
 
     @Override
