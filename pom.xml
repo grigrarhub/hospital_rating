@@ -11,7 +11,7 @@
     <groupId>com.mosreg.hospital_rating</groupId>
     <artifactId>hosp_rat</artifactId>
     <version>3.1</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>hosp_rating</name>
     <description>Service to send mail and collection of information</description>
     <properties>
